@@ -1,0 +1,25 @@
+# ansible_router_backup.yaml
+---
+- name: Backup Router Configurations
+  hosts: inventory
+  gather_facts: no
+
+  tasks:
+    - name: Backup Cisco Router Configuration
+      when: ansible_network_os == "cisco.ios.ios"
+      cisco.ios.ios_config:
+        backup: yes
+        backup_options:
+          dir_path: "/backup/cisco"
+      register: cisco_backup
+
+    - name: Backup Juniper Router Configuration
+      when: ansible_network_os == "juniper.junos.junos"
+      juniper.junos.junos_config:
+        backup: yes
+        dest: "/backup/juniper/{{ inventory_hostname }}.conf"
+      register: juniper_backup
+
+    - name: Display Backup Paths
+      debug:
+        msg: "Backup stored at {{ cisco_backup | default(juniper_backup) }}"

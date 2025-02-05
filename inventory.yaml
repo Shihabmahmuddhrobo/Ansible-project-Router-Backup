@@ -1,0 +1,17 @@
+# Inventory File (hosts.yaml)
+all:
+  children:
+    routers:
+      hosts:
+        cisco_router:
+          ansible_host: 10.1.1.10
+          ansible_network_os: cisco.ios.ios
+          ansible_connection: network_cli
+          ansible_user: admin
+          ansible_password: admin
+        juniper_router:
+          ansible_host: 10.1.1.20
+          ansible_network_os: juniper.junos.junos
+          ansible_connection: netconf
+          ansible_user: admin
+          ansible_password: admin
